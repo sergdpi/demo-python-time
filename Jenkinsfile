@@ -45,7 +45,7 @@ pipeline {
                         withCredentials([usernamePassword(credentialsId: 'ci-github', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
                             def encodedPassword = URLEncoder.encode("$GIT_PASSWORD", 'UTF-8')
                             sh "echo 'Set new ${env.BUILD_NUMBER} to ${app}.yaml k8s manifest'"
-                            sh "mkdir -p demo-infra"
+                            sh "rm -rf demo-infra && mkdir -p demo-infra"
                             dir("${env.WORKSPACE}/demo-infra") {
                                 sh "git config user.email ci@example.com"
                                 sh "git config user.name ci-jenkins-${NODE_NAME}"
