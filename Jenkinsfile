@@ -52,7 +52,7 @@ pipeline {
                                 sh "git clone --depth 5 https://github.com/sergdpi/demo-infra.git ."
                                 sh "git checkout main"
                                 sh "sed -i s~tag:.*\$~tag:' '${env.BUILD_NUMBER}~g ./kubernetes/demo/${app}.yaml"
-                                sh "sed -i s~BuildVersion:.*\$~BuildVersion:' \"'${env.BUILD_NUMBER}\"~g ./kubernetes/demo/${app}.yaml"
+                                sh "sed -i s~BuildVersion:.*\$~BuildVersion:' '\"${env.BUILD_NUMBER}\"~g ./kubernetes/demo/${app}.yaml"
                                 sh "git add ./kubernetes/demo/${app}.yaml"
                                 sh "git commit -m '[skip ci] Bump docker image tag version. Triggered Build: ${env.BUILD_NUMBER}'"
                                 sh "git push https://${GIT_USERNAME}:${encodedPassword}@github.com/${GIT_USERNAME}/demo-infra.git"
