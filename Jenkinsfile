@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Cloning git repo') {
             steps {
-                git([url: 'https://github.com/sergdpi/demo-python-time.git', branch: 'main'])
+                git([url: 'https://github.com/sergdpi/demo-python-time.git', branch: 'jenkins'])
 
             }
         }
