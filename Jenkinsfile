@@ -43,17 +43,18 @@ pipeline {
                 script {
                     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                         withCredentials([usernamePassword(credentialsId: 'ci-github', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-                            def encodedPassword = URLEncoder.encode("$GIT_PASSWORD",'UTF-8')
+                            def encodedPassword = URLEncoder.encode("$GIT_PASSWORD", 'UTF-8')
                             sh "git config user.email ci@example.com"
                             sh "git config user.name ci"
-                            sh "echo 'Set new ${env.BUILD_NUMBER} to {$app}.yaml k8s manifest'"
-                            sh "mkdir -p demo-infra && cd demo-infra && git clone https://github.com/${GIT_USERNAME}/demo-infra.git . && git checkout main"
-                            sh "pwd"
-                            sh "ls -lsa"
-                            sh "sed -i s~tag:.*\$~tag:' '${env.BUILD_NUMBER}~g ./kubernetes/demo/{$app}.yaml"
-                            sh "git add ./kubernetes/demo/{$app}.yaml"
-                            sh "git commit -m '[skip ci] Bump docker image tag version. Triggered Build: ${env.BUILD_NUMBER}'"
-                            sh "git push https://${GIT_USERNAME}:${encodedPassword}@github.com/${GIT_USERNAME}/demo-infra.git"
+                            sh "echo 'Set new ${env.BUILD_NUMBER} to ${app}.yaml k8s manifest'"
+                            sh "mkdir -p demo-infra"
+                            dir("${env.WORKSPACE}/demo-infra") {
+                                sh "git clone https://github.com/${GIT_USERNAME}/demo-infra.git . && git checkout main"
+                                sh "sed -i s~tag:.*\$~tag:' '${env.BUILD_NUMBER}~g ./kubernetes/demo/${app}.yaml"
+                                sh "git add ./kubernetes/demo/${app}.yaml"
+                                sh "git commit -m '[skip ci] Bump docker image tag version. Triggered Build: ${env.BUILD_NUMBER}'"
+                                sh "git push https://${GIT_USERNAME}:${encodedPassword}@github.com/${GIT_USERNAME}/demo-infra.git"
+                            }
                         }
                     }
                 }
