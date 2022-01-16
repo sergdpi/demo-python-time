@@ -44,11 +44,11 @@ pipeline {
                     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                         withCredentials([usernamePassword(credentialsId: 'ci-github', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
                             def encodedPassword = URLEncoder.encode("$GIT_PASSWORD", 'UTF-8')
-                            sh "git config user.email ci@example.com"
-                            sh "git config user.name ci"
                             sh "echo 'Set new ${env.BUILD_NUMBER} to ${app}.yaml k8s manifest'"
                             sh "mkdir -p demo-infra"
                             dir("${env.WORKSPACE}/demo-infra") {
+                                sh "git config user.email ci@example.com"
+                                sh "git config user.name ci-jenkins-${NODE_NAME}"
                                 sh "git checkout main"
                                 sh "sed -i s~tag:.*\$~tag:' '${env.BUILD_NUMBER}~g ./kubernetes/demo/${app}.yaml"
                                 sh "git add ./kubernetes/demo/${app}.yaml"
