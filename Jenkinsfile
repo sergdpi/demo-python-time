@@ -47,8 +47,8 @@ pipeline {
                             sh "echo 'Set new ${env.BUILD_NUMBER} to ${app}.yaml k8s manifest'"
                             sh "rm -rf demo-infra && mkdir -p demo-infra"
                             dir("${env.WORKSPACE}/demo-infra") {
-                                sh "git config user.email ci@example.com"
-                                sh "git config user.name ci-jenkins-${NODE_NAME}"
+                                sh "git config --global user.email ci@example.com"
+                                sh "git config --global user.name ci-jenkins-${NODE_NAME}"
                                 sh "git clone --depth 5 https://github.com/sergdpi/demo-infra.git ."
                                 sh "git checkout main"
                                 sh "sed -i s~tag:.*\$~tag:' '${env.BUILD_NUMBER}~g ./kubernetes/demo/${app}.yaml"
