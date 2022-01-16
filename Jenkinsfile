@@ -49,7 +49,7 @@ pipeline {
                             dir("${env.WORKSPACE}/demo-infra") {
                                 sh "git config user.email ci@example.com"
                                 sh "git config user.name ci-jenkins-${NODE_NAME}"
-                                sh "git clone --depth 5 https://github.com/sergdpi/demo-python-time.git ."
+                                sh "git clone --depth 5 https://github.com/sergdpi/demo-infra.git ."
                                 sh "git checkout main"
                                 sh "sed -i s~tag:.*\$~tag:' '${env.BUILD_NUMBER}~g ./kubernetes/demo/${app}.yaml"
                                 sh "git add ./kubernetes/demo/${app}.yaml"
