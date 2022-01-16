@@ -49,7 +49,7 @@ pipeline {
                             sh "echo 'Set new ${env.BUILD_NUMBER} to ${app}.yaml k8s manifest'"
                             sh "mkdir -p demo-infra"
                             dir("${env.WORKSPACE}/demo-infra") {
-                                sh "ls -lsa && git clone https://github.com/${GIT_USERNAME}/demo-infra.git . && git checkout main"
+                                sh "git checkout main"
                                 sh "sed -i s~tag:.*\$~tag:' '${env.BUILD_NUMBER}~g ./kubernetes/demo/${app}.yaml"
                                 sh "git add ./kubernetes/demo/${app}.yaml"
                                 sh "git commit -m '[skip ci] Bump docker image tag version. Triggered Build: ${env.BUILD_NUMBER}'"
