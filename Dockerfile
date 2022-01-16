@@ -14,6 +14,7 @@ COPY --chown=time:time requirements.txt requirements.txt
 RUN pip install --user -r requirements.txt
 
 ENV MyName="DevOps" \
+    BuildVersion="not set" \
     ENV="demo" \
     PATH="/home/time/.local/bin:${PATH}"
 
